@@ -1,0 +1,34 @@
+import re
+import sys
+
+# get file as argument
+tocountfile = ''.join(str(e) for e in (sys.argv[1:2]))
+
+# read in file
+text = open(tocountfile, 'r').read().lower()
+# strip unwanted characters
+wordss = re.sub('\W', " ", text)
+# make a list with words
+words = list(wordss.split())
+
+dic = {}
+for item in words:
+    dic[item] = 0
+
+# count words
+for item in words:
+    for items in dic.keys():
+        if items == item:
+            dic[item] = dic[item] + 1
+
+# Sort dic by value
+f = open(tocountfile + "-counted", 'w')
+counted = [(k, dic[k]) for k in sorted(dic, key=dic.get, reverse=True)]
+mostused, mostval = counted[0]
+leastused, leastval = counted[-1]
+
+# output into txt file
+
+f.write("Most used word is '{}' with {} uses.\nThe Most unique word is '{}' with {}\n".format(mostused, mostval, leastused, leastval))
+for key, val in counted:
+    f.write("{:>18} {:>18}\n".format(key, val))
